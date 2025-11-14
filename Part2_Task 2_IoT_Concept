@@ -1,0 +1,59 @@
+![data flow diagram](smartfarm.png)
+
+[Field Sensors]
+Soil moisture ─┐
+Soil temp     ├──> [Edge Gateway] --(MQTT)--> [IoT Hub]
+pH / EC       ┤
+PAR / NDVI    ┤
+Leaf wetness  ┤
+Weather (T/RH/Wind/Rain) ┘
+
+[IoT Hub] --(stream)--> [Stream Processor]
+- **Cleaning:** deduplication, timestamp alignment
+- **Enrichment:** GPS, soil type, management logs
+- **Windows:** 7/14/30-day aggregates & lags
+
+[Feature Store] <---- [Stream Processor]
+|                         |
+| (batch/real-time)       v
++------------------> [AI Model: Gradient Boosting Regressor]
+- inputs: engineered features
+- outputs: yield prediction + confidence
+
+[Recommendations Engine]
+- **Irrigation advice**
+- **Fertilizer timing**
+- **Disease risk alerts**
+
+[Actuators & Apps]
+- Irrigation valves (VFD/solenoids)
+- Farmer dashboard (mobile/web)
+- Alerts (SMS/USSD/WhatsApp)
+Implementation notes for simulation
+Synthetic data generation:
+
+Weather: Use historical seasonal patterns to simulate daily T/RH/rain.
+
+Soil moisture: Water balance model driven by rain/irrigation and evapotranspiration.
+
+https://www.elden-ringnightreign.com/#A/
+
+Edge vs cloud:
+
+https://ovr-advanced-settings.com/#A/
+
+https://www.ready-ornot.com/#A/
+
+Evaluation:
+
+Metrics: MAE/RMSE for yield; precision/recall for risk alerts.
+
+A/B simulation: Compare “AI-advised” vs “baseline” management policies.
+
+Scalability and cost:
+
+https://www.arksurvival-ascended.com/#A/
+
+Localization:
+
+https://www.clair-obscur-33.com/#A/
